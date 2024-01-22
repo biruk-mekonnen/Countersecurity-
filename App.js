@@ -4,9 +4,11 @@ import { keyGenerator } from "./keyGenerator";
 
 export default function App() {
  
-  const [K_msg, setmessage] =useState("");
+  const [K_msg, setalert] =useState("");
+  const[keyflag,setflag] =useState();
   const [text, setText] = useState(""); 
-  let Generatedkeys = {};
+  const [message, setmessage]=useState("");
+  let Generatedkeys = null;
 
 
 
@@ -16,20 +18,33 @@ function handelkey(text){
 
 if (text.length<8)
 {
- setmessage( "add more characters ")
+ setalert( "add more characters ")
+ setflag(0);
 }
 if(text.length == 8)
 {
   
-  setmessage('');
+  setalert('');
   Generatedkeys=keyGenerator(text)
+ setflag(1);
+ 
+
+}
 
 
 }
 
+function handelencrypt(keyflag)
+{
 
+  if(keyflag!==1)
+  {
+    setalert("you have to generate the key first");
+
+  }
+
+  
 }
-
 
 return (
   <View style={styles.container}>
@@ -43,8 +58,15 @@ return (
       />
        <Button title="Generate Keys"  onPress={() => handelkey(text)} />
       <Text style={styles.msg}>{K_msg}</Text>
-       <Text style={styles.text}>{}</Text>
-     
+      <TextInput
+        style={styles.input}
+        minLength={8}
+      maxLength={8}
+        placeholder="Enter alert"
+        onChangeText={(message) => setmessage(message)} // Update the state variable with the onChangeText event
+        value={message}
+      />
+      <Button title="encrypt message"  onPress={() => handelencrypt(keyflag)} />
        
     </View>
 );
